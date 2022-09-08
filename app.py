@@ -46,9 +46,9 @@ def create_user():
                 db.session.add(user)
                 db.session.commit()
 
-                return jsonify({
+                return jsonify(
                     'User successfully created'
-                }), 200
+                ), 200
             else:
                 return jsonify({
                     'Error':'Wrong password format'
@@ -76,11 +76,11 @@ def login():
             'Error': 'Wrong email or password'
         }), 400
     else:
-        user = User.query.filter_by(email=email).first() #conseguimos al usuario y el email es válido
+        user = User.query.filter_by(email=email).first()
         if user is not None:
             check_password = bcrypt.check_password_hash(user.password, password)
             if check_password:
-                access_token = create_access_token(identity=email) #la firma del usuario es el email
+                access_token = create_access_token(identity=email)
                 return jsonify({
                     'user': user.serialize(),
                     'access_token': access_token
